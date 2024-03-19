@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "medium-01-celery-example"
+version = "0.1.0"
+description = ""
+authors = ["Artur Rakhmatulin <artur.rakhmatulin@gmail.com>"]
+readme = "README.md"
+packages = [{include = "medium_01_celery_example"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.3"
+celery = "^5.3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
