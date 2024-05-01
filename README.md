@@ -2,7 +2,13 @@
 medium_01_celery_example
 
 ## install
-    poetry install
+    make install
 
 ## run 
-    python example/manage.py runserver
+    make run
+
+## Docker compose up
+    make docker-up
+
+## Docker compose down
+    make docker-down

@@ -4,6 +4,6 @@ services:
     ports:
       - "8000:5000"
   rabbit:
-    image: rabbit:3
+    image: rabbitmq:3
   redis:
     image: "redis:alpine"

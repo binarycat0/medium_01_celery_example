@@ -18,7 +18,11 @@ run: init
 	$(poetry) run python example/manage.py runserver
 
 .PHONY: docker-up
+
+docker-up:
 	docker compose up
 
 .PHONY: docker-down
+
+docker-down:
 	docker compose down
