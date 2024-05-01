@@ -1,0 +1,2 @@
+class CeleryTaskApplyException(Exception):
+    pass
