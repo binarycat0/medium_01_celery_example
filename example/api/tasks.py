@@ -15,4 +15,4 @@ def wrapped_simple_task(a: int, b: int):
     try:
         return simple_task.delay(a, b)
     except Exception as ex:
-        logger.error(ex)
+        logger.error("error while calling celery.delay: %s",ex)
