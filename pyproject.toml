@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Artur Rakhmatulin <artur.rakhmatulin@gmail.com>"]
 readme = "README.md"
-packages = [{include = "medium_01_celery_example"}]
+packages = [{include = "example"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

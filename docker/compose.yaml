@@ -1,0 +1,11 @@
+services:
+  django:
+    build:
+      args:
+        - WEB_APP_PORT=$WEB_APP_PORT
+        - DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - $WEB_APP_PORT:$WEB_APP_PORT
+  rabbit:
+    image: rabbitmq:3

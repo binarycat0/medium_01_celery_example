@@ -12,5 +12,10 @@ RUN make install
 RUN mkdir -p /example
 COPY ./example ./example
 
-EXPOSE 8000
-CMD ["make", "run"]
+ARG DJANGO_SETTINGS_MODULE
+ARG WEB_APP_PORT
+
+ENV WEB_APP_PORT=${WEB_APP_PORT}
+EXPOSE $WEB_APP_PORT
+
+CMD make port=0.0.0.0:${WEB_APP_PORT} run
