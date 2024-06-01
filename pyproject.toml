@@ -4,12 +4,12 @@ version = "0.1.0"
 description = ""
 authors = ["Artur Rakhmatulin <artur.rakhmatulin@gmail.com>"]
 readme = "README.md"
-packages = [{include = "example"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^5.0.3"
 celery = "^5.3.6"
+django-celery-results = "^2.5.1"
 
 
 [build-system]

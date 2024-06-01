@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -117,12 +117,18 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Celery Configuration Options
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbit")
+RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", "5672")
+RABBITMQ_USER = os.getenv("RABBITMQ_USER", "RABBITMQ_USER")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "RABBITMQ_PASSWORD")
+CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}//"
+
 CELERY_DEFAULT_BIND_TASK_CONF = {
     'bind': True,
     'queue': 'default'
 }
 
-# Celery Configuration Options
 CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60

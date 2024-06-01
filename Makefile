@@ -1,6 +1,6 @@
 .PHONY: init
 init:
-poetry_home = ${POETRY_HOME}
+poetry_home=${POETRY_HOME}
 
 ifeq ("$(wildcard $(poetry_home))","")
 poetry?=poetry
@@ -10,7 +10,7 @@ endif
 
 proj_name=medium_01_celery_example
 compose_file=docker/compose.yaml
-docker_env_file=./docker/.env
+docker_env_file=./docker/.env-docker
 docker-compose=docker compose -f $(compose_file) -p $(proj_name) --project-directory=. --env-file=$(docker_env_file)
 
 .PHONY: install
@@ -41,3 +41,7 @@ docker-down: init
 .PHONY: docker-ps
 docker-ps: init
 	$(docker-compose) ps
+
+.PHONY: celery-worker
+celery-worker:
+	$(poetry) run celery -A ${CELERY_WORKER_APP_NAME} worker -l ${CELERY_WORKER_LOG_LEVEL}

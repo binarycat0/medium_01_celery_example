@@ -1,12 +1,42 @@
 services:
   django:
     build:
+      dockerfile: ./docker/Dockerfile
       args:
         - WEB_APP_PORT=$WEB_APP_PORT
-      dockerfile: ./docker/Dockerfile
     environment:
+      - RABBITMQ_HOST=$RABBITMQ_HOST
+      - RABBITMQ_PORT=$RABBITMQ_PORT
+      - RABBITMQ_USER=$RABBITMQ_USER
+      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
       - DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+      - WEB_APP_PORT=$WEB_APP_PORT
     ports:
       - $WEB_APP_PORT:$WEB_APP_PORT
+    entrypoint: ["/django_entrypoint.sh"]
   rabbit:
     image: rabbitmq:3
+    ports:
+      - 5672:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBITMQ_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBITMQ_PASSWORD
+  celery_worker:
+    links:
+      - rabbit
+    depends_on:
+      - rabbit
+    build:
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - RABBITMQ_HOST=$RABBITMQ_HOST
+      - RABBITMQ_PORT=$RABBITMQ_PORT
+      - RABBITMQ_USER=$RABBITMQ_USER
+      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
+      - DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+      - CELERY_WORKER_APP_NAME=$CELERY_WORKER_APP_NAME
+      - CELERY_WORKER_LOG_LEVEL=$CELERY_WORKER_LOG_LEVEL
+    entrypoint: ["/celery_entrypoint.sh"]
+
+networks:
+  default:
