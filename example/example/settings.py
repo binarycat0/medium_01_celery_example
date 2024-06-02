@@ -26,7 +26,7 @@ SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -77,8 +77,12 @@ WSGI_APPLICATION = "example.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", 5432),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "POSTGRES_PASSWORD"),
+        "USER": os.getenv("POSTGRES_USER", "POSTGRES_USER"),
+        "NAME": os.getenv("POSTGRES_DB", "POSTGRES_DB"),
     }
 }
 
@@ -125,11 +129,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django setting.
 REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
 REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
-CACHE_REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        "LOCATION": CACHE_REDIS_URL,
+        "LOCATION": f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
 
@@ -145,8 +148,10 @@ CELERY_DEFAULT_BIND_TASK_CONF = {
     'queue': 'default'
 }
 
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 CELERY_CACHE_BACKEND = 'default'
 
 CELERY_TIMEZONE = "Europe/London"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

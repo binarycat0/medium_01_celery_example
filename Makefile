@@ -60,4 +60,10 @@ docker-ps: init
 
 .PHONY: celery-worker
 celery-worker:
-	$(poetry) run celery --workdir=example -A ${CELERY_WORKER_APP_NAME} worker -l ${CELERY_WORKER_LOG_LEVEL}
+	$(poetry) run celery \
+	--workdir=example \
+	-A ${CELERY_WORKER_APP_NAME} \
+	worker \
+	--events \
+	--queues default \
+	-l ${CELERY_WORKER_LOG_LEVEL}
