@@ -13,8 +13,10 @@ endif
 
 proj_name=medium_01_celery_example
 compose_file=docker/compose.yaml
+compose_file_all=docker/compose-all.yaml
 docker_env_file=./docker/.env-docker
 docker-compose=docker compose -f $(compose_file) -p $(proj_name) --project-directory=. --env-file=$(docker_env_file)
+docker-compose-all=docker compose -f $(compose_file_all) -p $(proj_name) --project-directory=. --env-file=$(docker_env_file)
 
 .PHONY: install
 install: init
@@ -28,6 +30,10 @@ gunicorn: init
 run: init
 	$(poetry) run python example/manage.py runserver 0.0.0.0:${WEB_APP_PORT}
 
+.PHONY: collectstatic
+collectstatic: init
+	$(poetry) run python example/manage.py collectstatic --no-input
+
 .PHONY: migrate
 migrate: init
 	$(poetry) run python example/manage.py migrate
@@ -39,6 +45,10 @@ docker-build: init
 .PHONY: docker-up
 docker-up: docker-build
 	$(docker-compose) up -d
+
+.PHONY: docker-up-all
+docker-up-all: docker-build
+	$(docker-compose-all) up -d
 
 .PHONY: docker-down
 docker-down: init

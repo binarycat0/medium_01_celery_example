@@ -1,4 +1,14 @@
 services:
+  django:
+    build:
+      dockerfile: ./docker/Dockerfile
+      args:
+        - WEB_APP_PORT=$WEB_APP_PORT
+    volumes:
+      - ./example:/example
+    ports:
+      - $WEB_APP_PORT:$WEB_APP_PORT
+    entrypoint: [ "/django_entrypoint.sh" ]
   redis:
     image: redis:alpine
     ports:
