@@ -25,7 +25,7 @@ class CheckSimpleTaskView(APIView):
 class CreateSimpleSimpleView(APIView):
     def post(self, request: Request) -> Response:
         sent: AsyncResult = wrapped_simple_task(1, 2)
-        return Response(data={"task_id": sent.task_id})
+        return Response(data={"task_id": sent.task_id if sent else None})
 
 
 class HealthCheckView(APIView):

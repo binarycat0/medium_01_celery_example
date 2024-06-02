@@ -155,3 +155,42 @@ CELERY_TIMEZONE = "Europe/London"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# Logging
+LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {name} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'example': {
+            'handlers': ['console'],
+            'level': LOGGING_LEVEL,
+        },
+        'common': {
+            'handlers': ['console'],
+            'level': LOGGING_LEVEL,
+        },
+        'api': {
+            'handlers': ['console'],
+            'level': LOGGING_LEVEL,
+        },
+    },
+}

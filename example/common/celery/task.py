@@ -32,7 +32,7 @@ class PatchedTask(celery.app.task.Task):
             connection_succeed = False
             raise exc
         finally:
-            logger.debug("celery.task.connection.succeed | ", connection_succeed)
+            logger.debug("celery.task.connection.succeed | %s", connection_succeed)
 
     @contextmanager
     def wrap_apply_async_exceptions(self):
@@ -59,6 +59,8 @@ class PatchedTask(celery.app.task.Task):
             shadow=None,
             **options,
     ):
+        logger.debug("%s called by apply_async", self.name)
+
         if get_connection().in_atomic_block:
             logger.warning("celery.task.apply_async.in_atomic_block | %s", self.name)
 
