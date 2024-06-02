@@ -21,7 +21,7 @@ docker-compose-all=$(docker-compose-common) -f $(compose_file_all)
 
 .PHONY: install
 install: init
-	$(poetry) install
+	$(poetry) install --no-interaction --no-root
 
 .PHONY: gunicorn
 gunicorn: init

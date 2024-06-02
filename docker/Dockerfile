@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 RUN apt-get update  \
-    && apt-get install -y make pipx  \
+    && apt-get install -y make pipx python3-dev libpq-dev gcc \
     && apt-get clean
 RUN pipx install poetry
 
