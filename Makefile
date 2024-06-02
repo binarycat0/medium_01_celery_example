@@ -1,3 +1,6 @@
+include .env-local
+export
+
 .PHONY: init
 init:
 poetry_home=${POETRY_HOME}
@@ -17,14 +20,17 @@ docker-compose=docker compose -f $(compose_file) -p $(proj_name) --project-direc
 install: init
 	$(poetry) install
 
+.PHONY: gunicorn
+gunicorn: init
+	$(poetry) run gunicorn example.wsgi --reload --pythonpath=example -w 2 -b 0.0.0.0:${WEB_APP_PORT}
+
 .PHONY: run
 run: init
-ifdef port
-	@echo 'port $(port)'
-else
-	port=8000
-endif
-	$(poetry) run python example/manage.py runserver $(port)
+	$(poetry) run python example/manage.py runserver 0.0.0.0:${WEB_APP_PORT}
+
+.PHONY: migrate
+migrate: init
+	$(poetry) run python example/manage.py migrate
 
 .PHONY: docker-build
 docker-build: init
@@ -44,4 +50,4 @@ docker-ps: init
 
 .PHONY: celery-worker
 celery-worker:
-	$(poetry) run celery -A ${CELERY_WORKER_APP_NAME} worker -l ${CELERY_WORKER_LOG_LEVEL}
+	$(poetry) run celery --workdir=example -A ${CELERY_WORKER_APP_NAME} worker -l ${CELERY_WORKER_LOG_LEVEL}

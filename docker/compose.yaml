@@ -4,16 +4,15 @@ services:
       dockerfile: ./docker/Dockerfile
       args:
         - WEB_APP_PORT=$WEB_APP_PORT
-    environment:
-      - RABBITMQ_HOST=$RABBITMQ_HOST
-      - RABBITMQ_PORT=$RABBITMQ_PORT
-      - RABBITMQ_USER=$RABBITMQ_USER
-      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
-      - DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
-      - WEB_APP_PORT=$WEB_APP_PORT
+    volumes:
+      - ./example:/example
     ports:
       - $WEB_APP_PORT:$WEB_APP_PORT
     entrypoint: ["/django_entrypoint.sh"]
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
   rabbit:
     image: rabbitmq:3
     ports:
@@ -28,14 +27,6 @@ services:
       - rabbit
     build:
       dockerfile: ./docker/Dockerfile
-    environment:
-      - RABBITMQ_HOST=$RABBITMQ_HOST
-      - RABBITMQ_PORT=$RABBITMQ_PORT
-      - RABBITMQ_USER=$RABBITMQ_USER
-      - RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD
-      - DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
-      - CELERY_WORKER_APP_NAME=$CELERY_WORKER_APP_NAME
-      - CELERY_WORKER_LOG_LEVEL=$CELERY_WORKER_LOG_LEVEL
     entrypoint: ["/celery_entrypoint.sh"]
 
 networks:
