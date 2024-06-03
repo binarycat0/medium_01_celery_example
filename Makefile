@@ -29,7 +29,7 @@ gunicorn: init
 
 .PHONY: run
 run: init
-	$(poetry) run python example/manage.py runserver 0.0.0.0:${WEB_APP_PORT}
+	$(poetry) run python example/manage.py runserver --pythonpath=example 0.0.0.0:${WEB_APP_PORT}
 
 .PHONY: collectstatic
 collectstatic: init
@@ -45,7 +45,7 @@ initadmin: init
 
 .PHONY: docker-build
 docker-build: init
-	$(docker-compose) build
+	$(docker-compose-all) build
 
 .PHONY: docker-up
 docker-up: docker-build
@@ -57,7 +57,7 @@ docker-up-all: docker-build
 
 .PHONY: docker-down
 docker-down: init
-	$(docker-compose) down
+	$(docker-compose-all) down
 
 .PHONY: docker-ps
 docker-ps: init
@@ -72,3 +72,11 @@ celery-worker:
 	--events \
 	--queues default \
 	-l ${CELERY_WORKER_LOG_LEVEL}
+
+.PHONY: disaster
+disaster:
+	$(docker-compose) stop rabbit
+
+.PHONY: heal
+heal:
+	$(docker-compose) start rabbit
