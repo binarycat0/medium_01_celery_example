@@ -39,6 +39,10 @@ collectstatic: init
 migrate: init
 	$(poetry) run python example/manage.py migrate
 
+.PHONY: initadmin
+initadmin: init
+	$(poetry) run python example/manage.py createsuperuser --username=${DJANGO_SUPERUSER_NAME} --noinput --skip-checks
+
 .PHONY: docker-build
 docker-build: init
 	$(docker-compose) build

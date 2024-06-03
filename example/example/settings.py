@@ -126,16 +126,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# django setting.
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
-REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        "LOCATION": f'redis://{REDIS_HOST}:{REDIS_PORT}',
-    }
-}
-
 # Celery Configuration Options
 RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbit")
 RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", "5672")
@@ -148,8 +138,7 @@ CELERY_DEFAULT_BIND_TASK_CONF = {
     'queue': 'default'
 }
 
-CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
-CELERY_CACHE_BACKEND = 'default'
+CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_TIMEZONE = "Europe/London"
 CELERY_TASK_TRACK_STARTED = True
