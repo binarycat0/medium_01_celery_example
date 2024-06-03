@@ -17,6 +17,7 @@ For testing hypothesis
 #### Negative scenario
     # switch Off rabbitMQ
     make disaster
+    #
     make call-task-simple
     # > 500
     make call-task-wrapped
@@ -35,9 +36,10 @@ For development
     make install
 ### setup environment
     make docker-up
-### run django
+    make migrate
+    make initadmin
+### run project
     make run
-### run celery worker
     make celery-worker
 ### stop environment
     make docker-down
