@@ -1,7 +1,8 @@
-from celery import shared_task, Task
-from django.conf import settings
-
 import logging
+
+from celery import shared_task, Task
+from celery.result import AsyncResult
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ def simple_task(self: Task, a: int, b: int):
     return a + b
 
 
-def wrapped_simple_task(a: int, b: int):
+def wrapped_simple_task(a: int, b: int) -> AsyncResult:
     try:
         return simple_task.delay(a, b)
     except Exception as ex:

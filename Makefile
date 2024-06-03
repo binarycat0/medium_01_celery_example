@@ -80,3 +80,11 @@ disaster:
 .PHONY: heal
 heal:
 	$(docker-compose) start rabbit
+
+.PHONY: call-task-simple
+call-task-simple:
+	curl -X POST 127.0.0.1:${WEB_APP_PORT}/api/task/simple/
+
+.PHONY: call-task-wrapped
+call-task-wrapped:
+	curl -X POST 127.0.0.1:${WEB_APP_PORT}/api/task/wrapped/

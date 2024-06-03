@@ -9,10 +9,22 @@ For testing hypothesis
 
 ### run project
     make docker-up-all
-### create demo task
-    make task-create
-### check task status
-    make task-check
+#### Positive scenario
+    make call-task-simple
+    # > 200
+    make call-task-wrapped
+    # > 200
+#### Negative scenario
+    # switch Off rabbitMQ
+    make disaster
+    make call-task-simple
+    # > 500
+    make call-task-wrapped
+    # > 200
+    #
+    # switch On rabbitMQ
+    make heal
+
 ### stop project
     make docker-down
 
