@@ -5,8 +5,8 @@ from celery import Celery
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')
-celery_task_cls = os.environ.get('CELERY_TASK_CLS', 'celery.app.task.Task')
 
+celery_task_cls = os.environ.get('CELERY_TASK_CLS', 'celery.app.task.PatchedTask')
 app = Celery('example', task_cls=celery_task_cls)
 
 # Using a string here means the worker doesn't have to serialize

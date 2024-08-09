@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 @shared_task(**settings.CELERY_DEFAULT_BIND_TASK_CONF)
 def simple_task(self: Task, a: int, b: int):
-    return a + b
+    return a / b
 
 
 def wrapped_simple_task(a: int, b: int) -> AsyncResult:

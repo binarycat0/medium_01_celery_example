@@ -81,10 +81,23 @@ disaster:
 heal:
 	$(docker-compose) start rabbit
 
+a ?= 1
+b ?= 2
 .PHONY: call-task-simple
 call-task-simple:
-	curl -X POST 127.0.0.1:${WEB_APP_PORT}/api/task/simple/
+	curl -X POST \
+	-H "Content-Type: application/json; charset=utf-8" \
+	--data '{"a":$(a),"b":$(b)}' \
+	127.0.0.1:${WEB_APP_PORT}/api/task/simple/
 
 .PHONY: call-task-wrapped
 call-task-wrapped:
-	curl -X POST 127.0.0.1:${WEB_APP_PORT}/api/task/wrapped/
+	curl -X POST \
+	-H "Content-Type: application/json; charset=utf-8" \
+	--data '{"a":$(a),"b":$(b)}' \
+	127.0.0.1:${WEB_APP_PORT}/api/task/wrapped/
+
+id ?=
+.PHONY: check-task
+check-task:
+	curl -X GET 127.0.0.1:${WEB_APP_PORT}/api/task/status/$(id)

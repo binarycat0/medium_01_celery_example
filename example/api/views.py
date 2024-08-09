@@ -24,16 +24,24 @@ class CheckSimpleTaskView(APIView):
 
 class CreateTaskSimpleView(APIView):
     def post(self, request: Request) -> Response:
-        result: AsyncResult = simple_task.delay(1, 2)
-        data = {"task_id": result.task_id if result else None}
-        return Response(data=data)
+        result: AsyncResult = simple_task.delay(
+            request.data.get("a", 1),
+            request.data.get("b", 2)
+        )
+        return Response(
+            data={"task_id": result.task_id if result else None}
+        )
 
 
 class CreateTaskWrappedView(APIView):
     def post(self, request: Request) -> Response:
-        result: AsyncResult = wrapped_simple_task(1, 2)
-        data = {"task_id": result.task_id if result else None}
-        return Response(data=data)
+        result: AsyncResult = wrapped_simple_task(
+            request.data.get("a", 1),
+            request.data.get("b", 2)
+        )
+        return Response(
+            data={"task_id": result.task_id if result else None}
+        )
 
 
 class HealthCheckView(APIView):

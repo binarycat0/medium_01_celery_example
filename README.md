@@ -26,6 +26,9 @@ For testing hypothesis
     # switch On rabbitMQ
     make heal
 
+### Check task result
+    make check-task id=<task_id>
+
 ### stop project
     make docker-down
 
