@@ -1,5 +1,11 @@
 # medium_01_celery_example
 
+This project is a medonstration of the ideas I declare in the article I posted on [medium.com](https://medium.com/@artur.rakhmatulin/enhancing-django-application-stability-key-resilience-techniques-and-best-practices-05175edc6933).
+
+Please check it out.
+
+----
+
 There are two possible modes to use the project
 
 Demo mode and Development mode
